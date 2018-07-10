@@ -32,7 +32,7 @@ module Sfn
 
         path = config.fetch(:stack_profile, :profile_directory, '.')
         profile_data = Bogo::Config.new("#{path}/#{profile}.yml").data
-        profile_keys = profile_data.keys.select { |key| key != 'meta' }
+        profile_keys = profile_data.keys.select { |key| key != 'meta' and key != 'profile' }
 
         ## To-Do: Confirm that context keys exist in profile keys
 
