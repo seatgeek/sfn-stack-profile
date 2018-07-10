@@ -41,10 +41,12 @@ module Sfn
           next if value.nil?
           if profile_data.keys.include? value
             data = data.merge(profile_data[value])
+            ui.info "Merged #{key.capitalize} #{value} into configuration."
           else
-            warn "Key #{value} not found in profile."
+            ui.info "#{key.capitalize} #{value} is not defined in #{profile}, will only be applied to tags and parameters."
           end
         end
+
         environment_parameters = profile_data.delete(:environment_parameters) || []
         role_parameters = profile_data.delete(:role_parameters) || []
         version_parameters = profile_data.delete(:version_parameters) || []
