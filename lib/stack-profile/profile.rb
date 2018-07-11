@@ -6,9 +6,26 @@ require 'sfn'
 module Sfn
   class Callback
     class StackProfileCallback < Callback
+      include Sfn::CommandModule::Template
+      include Sfn::CommandModule::Stack
+
+      def load_profile(profile)
+        path = config.fetch(:stack_profile, :profile_directory, '.')
+        profile_data = Bogo::Config.new("#{path}/#{profile}.yml").data
+        return profile_data
+      end
 
       def key_allowed?(values, key)
         if values.include?(key) || key.nil?
+          return true
+        else
+          return false
+        end
+      end
+
+      def update_allowed?(profile)
+        profile_data = load_profile(profile)
+        if profile_data['meta']['updates_allowed']
           return true
         else
           return false
@@ -26,20 +43,19 @@ module Sfn
         end
       end
 
-      def load_profile(profile, context)
+      def profile_config(profile, context, stack_name=nil)
+        profile_data = load_profile(profile)
+
+        profile_keys = profile_data.keys.select { |key| key != 'meta' and key != 'profile' }
 
         allowed_values(context)
-
-        path = config.fetch(:stack_profile, :profile_directory, '.')
-        profile_data = Bogo::Config.new("#{path}/#{profile}.yml").data
-        profile_keys = profile_data.keys.select { |key| key != 'meta' and key != 'profile' }
 
         ## To-Do: Confirm that context keys exist in profile keys
 
         data = profile_data['default']
         context.each do |key, value|
           next if value.nil?
-          if profile_data.keys.include? value
+          if profile_keys.include? value
             data = data.merge(profile_data[value])
             ui.info "Merged #{key.capitalize} #{value} into configuration."
           else
@@ -72,9 +88,23 @@ module Sfn
         ## Merge Configs
         config[:compile_parameters] = data.delete(:compile_parameters).merge(config[:compile_parameters])
         config[:parameters] = data.delete(:parameters).merge(config[:parameters])
-        config[:file] = data.delete(:template)
+
+        ## Template logic for updates/change sets
+        if stack_name
+          unless profile_data[:meta][:template_update_allowed]
+            config[:file] = nil
+          end
+          if profile_data[:meta][:always_update_template]
+            config[:file] = config[:file] || data.delete(:template)
+          end
+          data.delete(:template)
+        else
+          config[:file] = data.delete(:template)
+        end
+
         config[:apply_stack] = config[:apply_stack].concat(data.delete(:apply_stacks)).uniq
 
+        ## Merge mapped parameters
         environment_compile_parameters.each do |param|
           config[:compile_parameters].merge!({ param => context[:environment] })
         end
@@ -97,6 +127,35 @@ module Sfn
 
       def after_config_update(*_)
         if config[:profile]
+          if update_allowed?(config[:profile])
+            if arguments.length > 1
+              stack_name = arguments[1]
+            else
+              stack_name = arguments[0]
+            end
+            config[:parameters] ||= Smash.new
+            config[:compile_parameters] ||= Smash.new
+            config[:apply_stack] ||= []
+            config[:apply_mapping] ||= Smash.new
+            config[:options][:tags] ||= Smash.new
+            profile = config[:profile]
+            context = {
+              environment: config[:environment],
+              role: config[:role],
+              version: config[:version]
+            }
+            profile_config(config[:profile], context, stack_name)
+            nil
+          else
+            ui.warn "Selected profile #{config[:profile]} does not allow updates. Exiting..."
+            exit(false)
+          end
+        end
+      end
+      alias_method :after_config_change_set, :after_config_update
+
+      def after_config_create(*_)
+        if config[:profile]
           config[:parameters] ||= Smash.new
           config[:compile_parameters] ||= Smash.new
           config[:apply_stack] ||= []
@@ -108,13 +167,13 @@ module Sfn
             role: config[:role],
             version: config[:version]
           }
-          load_profile(profile, context)
+          profile_config(profile, context)
           nil
         end
       end
-      alias_method :after_config_create, :after_config_update
-      alias_method :after_config_validate, :after_config_update
-      alias_method :after_config_print, :after_config_update
+
+      alias_method :after_config_validate, :after_config_create
+      alias_method :after_config_print, :after_config_create
     end
   end
 end
