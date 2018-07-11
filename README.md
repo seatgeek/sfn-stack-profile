@@ -58,6 +58,9 @@ Profiles are a YAML file. The profile name should match the filename. A basic pr
 profile: nomad-stack
 
 # Parameter mappings
+environment_compile_parameters:
+  - environment
+
 environment_parameters:
   - environment
 
@@ -111,7 +114,7 @@ meta:
 ```
 About each section:
 #### Parameter Mappings
-Each context argument (`environment`, `role`, `version`) can be mapped to one or more parameters automatically. In this example, we're mapping the `environment` value to the `environment` parameter; the `role` value to both the `service` and `class` parameters; and the `version` value to the `ami_version` parameter. Each of the context arguments are included in the stack tags, so even though we haven't defined any version context, the version argument is a useful way to pass in both a parameter value and add metadata to the stack and resources.
+Each context argument (`environment`, `role`, `version`) can be mapped to one or more compile time or run time parameters automatically. In this example, we're mapping the `environment` value to the `environment` compile time and run time parameters; the `role` value to both the `service` and `class` parameters; and the `version` value to the `ami_version` parameter. Each of the context arguments are included in the stack tags, so even though we haven't defined any version context, the version argument is a useful way to pass in both a parameter value and add metadata to the stack and resources.
 
 #### Default Settings & Contexts
 The `default` and context hashes accept the following keys:
@@ -134,6 +137,7 @@ template: core_service
 compile_parameters:
   subnet_zone: private
   availability_zones: 3
+  environment: production
 parameters:
   environment: production
   service: applications

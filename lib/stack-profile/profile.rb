@@ -47,6 +47,9 @@ module Sfn
           end
         end
 
+        environment_compile_parameters = profile_data.delete(:environment_compile_parameters) || []
+        role_compile_parameters = profile_data.delete(:role_compile_parameters) || []
+        version_compile_parameters = profile_data.delete(:version_compile_parameters) || []
         environment_parameters = profile_data.delete(:environment_parameters) || []
         role_parameters = profile_data.delete(:role_parameters) || []
         version_parameters = profile_data.delete(:version_parameters) || []
@@ -72,6 +75,15 @@ module Sfn
         config[:file] = data.delete(:template)
         config[:apply_stack] = config[:apply_stack].concat(data.delete(:apply_stacks)).uniq
 
+        environment_compile_parameters.each do |param|
+          config[:compile_parameters].merge!({ param => context[:environment] })
+        end
+        role_compile_parameters.each do |param|
+          config[:compile_parameters].merge!({ param => context[:role] })
+        end
+        version_compile_parameters.each do |param|
+          config[:compile_parameters].merge!({ param => context[:version] })
+        end
         environment_parameters.each do |param|
           config[:parameters].merge!({ param => context[:environment] })
         end
