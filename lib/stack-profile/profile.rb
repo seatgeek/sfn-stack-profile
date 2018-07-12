@@ -6,8 +6,6 @@ require 'sfn'
 module Sfn
   class Callback
     class StackProfileCallback < Callback
-      include Sfn::CommandModule::Template
-      include Sfn::CommandModule::Stack
 
       def load_profile(profile)
         path = config.fetch(:stack_profile, :profile_directory, '.')
