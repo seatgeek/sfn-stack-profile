@@ -83,6 +83,7 @@ default:
     ebs_size: 200
   tags:
     cost_center: infra
+    notify_slack_channels: infrastructure,ops-messages,dev,nro
 
 # Environment Contexts
 production:
@@ -107,7 +108,6 @@ meta:
   default_ttl: 7
   rotate_count: 1
   rotate_wait_seconds: 300
-  notify_slack_channels: infrastructure,ops-messages,dev,nro
   updates_allowed: true
   template_update_allowed: true
   always_update_template: false
@@ -151,6 +151,7 @@ apply_stacks:
   - production-internal-alb
 tags:
   cost_center: infra
+  notify_slack_channels: infrastructure,ops-messages,dev,nro
   profile: nomad-client
   environment: production
   role: applications
@@ -167,7 +168,5 @@ The `meta` hash includes information about how the profiles callback and other t
 `default_ttl` is the default TTL, and may be overriden with the `--ttl` flag.
 
 `rotate_count` and `rotate_wait_seconds` are instructions for autoscaling group replacement via an external tool (to be implemented).
-
-`notify_slack_channels` can be used with an external notification service to alert Slack channels during stack updates.
 
 `updates_allowed`, `template_update_allowed`, and `always_update_template` instruct the profile callback about whether to allow a stack update, and if so, whether to update the stack template during an update. Note that these are enforced via the profile callback, so these settings will not prevent updates via other tools.
