@@ -50,11 +50,12 @@ module Sfn
 
         ## To-Do: Confirm that context keys exist in profile keys
 
-        data = profile_data['default']
+        data = profile_data[:default]
+
         context.each do |key, value|
           next if value.nil?
           if profile_keys.include? value
-            data = data.merge(profile_data[value])
+            data[value] = data.merge(profile_data[value])
             ui.info "Merged #{key.capitalize} #{value} into configuration."
           else
             ui.info "#{key.capitalize} #{value} is not defined in #{profile}, will only be applied to tags and parameters."
