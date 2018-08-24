@@ -55,7 +55,14 @@ module Sfn
         context.each do |key, value|
           next if value.nil?
           if profile_keys.include? value
-            data[value] = data.merge(profile_data[value])
+            profile_data[value].keys.each do |k|
+              ## Merge hashes, override arrays & strings
+              if data[k].is_a? Hash
+                data[k] = data[k].merge(profile_data[value][k])
+              else
+                data[k] = profile_data[value][k]
+              end
+            end
             ui.info "Merged #{key.capitalize} #{value} into configuration."
           else
             ui.info "#{key.capitalize} #{value} is not defined in #{profile}, will only be applied to tags and parameters."
