@@ -78,7 +78,7 @@ module Sfn
 
         ## Set Stack Tags
         ## Default tags may be overridden
-        default_tags = {}
+        default_tags = config[:options][:tags] || {}
         default_tags[:profile] = profile
         default_tags[:environment] = context[:environment] if context[:environment]
         default_tags[:role] = context[:role] if context[:role]
@@ -89,11 +89,21 @@ module Sfn
         meta_tags[:rotate_count] = profile_data[:meta][:rotate_count]
         meta_tags[:rotate_wait_seconds] = profile_data[:meta][:rotate_wait_seconds]
         ## Merge tags (Default, Configured, Auto)
-        config[:options][:tags] = default_tags.merge(data.delete(:tags)).merge(meta_tags)
+        if data[:tags]
+          config[:options][:tags] = default_tags.merge(data.delete(:tags)).merge(meta_tags)
+        else
+          config[:options][:tags] = default_tags.merge(meta_tags)
+        end
 
         ## Merge Configs
         config[:compile_parameters] = data.delete(:compile_parameters).merge(config[:compile_parameters])
-        config[:parameters] = data.delete(:parameters).merge(config[:parameters])
+
+        profile_parameters = data.delete(:parameters) || {}
+        if config[:parameters]
+          config[:parameters] = profile_parameters.merge(config[:parameters])
+        else
+          config[:parameters] = profile_parameters
+        end
 
         ## Template logic for updates/change sets
         if stack_name
@@ -108,7 +118,9 @@ module Sfn
           config[:file] = data.delete(:template)
         end
 
-        config[:apply_stack] = config[:apply_stack].concat(data.delete(:apply_stacks)).uniq
+        if data[:apply_stacks]
+          config[:apply_stack] = config[:apply_stack].concat(data.delete(:apply_stacks)).uniq
+        end
 
         ## Merge mapped parameters
         environment_compile_parameters.each do |param|
