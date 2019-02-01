@@ -59,6 +59,8 @@ module Sfn
               ## Merge hashes, override arrays & strings
               if data[k].is_a? Hash
                 data[k] = data[k].merge(profile_data[value][k])
+              elsif data[k].is_a? Array
+                data[k] = data[k] +=  profile_data[value][k]
               else
                 data[k] = profile_data[value][k]
               end
