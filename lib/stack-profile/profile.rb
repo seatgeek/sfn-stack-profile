@@ -88,6 +88,7 @@ module Sfn
         meta_tags[:ttl_days] = config[:ttl] || profile_data[:meta][:default_ttl]
         meta_tags[:rotate_count] = profile_data[:meta][:rotate_count]
         meta_tags[:rotate_wait_seconds] = profile_data[:meta][:rotate_wait_seconds]
+
         ## Merge tags (Default, Configured, Auto)
         if data[:tags]
           config[:options][:tags] = default_tags.merge(data.delete(:tags)).merge(meta_tags)
@@ -96,7 +97,12 @@ module Sfn
         end
 
         ## Merge Configs
-        config[:compile_parameters] = data.delete(:compile_parameters).merge(config[:compile_parameters])
+        profile_compile_parameters = data.delete(:compile_parameters) || {}
+        if config[:compile_parameters]
+          config[:compile_parameters] = profile_compile_parameters.merge(config[:compile_parameters])
+        else
+          config[:compile_parameters] = profile_compile_parameters
+        end
 
         profile_parameters = data.delete(:parameters) || {}
         if config[:parameters]
