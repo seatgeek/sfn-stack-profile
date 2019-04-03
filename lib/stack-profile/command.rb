@@ -25,8 +25,8 @@ module Sfn
         :default => ENV['VERSION']
       )
       attribute(
-      :defaults, [TrueClass, FalseClass],
-      :default => ENV['DEFAULTS'] == 'true' ? true : false
+        :defaults, [TrueClass, FalseClass],
+        :default => ENV['DEFAULTS'] == 'true' ? true : false
       )
    end
    class Create
