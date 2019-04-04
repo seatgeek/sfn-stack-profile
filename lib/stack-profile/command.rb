@@ -6,86 +6,104 @@ module Sfn
    class Validate
       attribute(
         :profile, String,
-        :description => 'Stack Profile'
+        :description => 'Stack Profile',
+        :default => ENV['PROFILE']
       )
       attribute(
         :environment, String,
-        :description => 'Profile Environment'
+        :description => 'Profile Environment',
+        :default => ENV['ENVIRONMENT']
       )
       attribute(
         :role, String,
-        :description => 'Profile Role'
+        :description => 'Profile Role',
+        :default => ENV['ROLE']
       )
       attribute(
         :version, String,
-        :description => 'Stack Version'
+        :description => 'Stack Version',
+        :default => ENV['VERSION']
       )
    end
    class Create
      attribute(
        :profile, String,
-       :description => 'Stack Profile'
+       :description => 'Stack Profile',
+       :default => ENV['PROFILE']
      )
      attribute(
        :environment, String,
-       :description => 'Profile Environment'
+       :description => 'Profile Environment',
+       :default => ENV['ENVIRONMENT']
      )
      attribute(
        :role, String,
-       :description => 'Profile Role'
-     )
-     attribute(
-       :ttl, String,
-       :description => 'Stack TTL'
+       :description => 'Profile Role',
+       :default => ENV['ROLE']
      )
      attribute(
        :version, String,
-       :description => 'Stack Version'
+       :description => 'Stack Version',
+       :default => ENV['VERSION']
+     )
+     attribute(
+       :ttl, String,
+       :description => 'Stack TTL',
+       :default => ENV['TTL']
      )
    end
-   ## Update and Change Sets don't work yet
    class Update
      attribute(
        :profile, String,
-       :description => 'Stack Profile'
+       :description => 'Stack Profile',
+       :default => ENV['PROFILE']
      )
      attribute(
        :environment, String,
-       :description => 'Profile Environment'
+       :description => 'Profile Environment',
+       :default => ENV['ENVIRONMENT']
      )
      attribute(
        :role, String,
-       :description => 'Profile Role'
-     )
-     attribute(
-       :ttl, String,
-       :description => 'Stack TTL'
+       :description => 'Profile Role',
+       :default => ENV['ROLE']
      )
      attribute(
        :version, String,
-       :description => 'Stack Version'
+       :description => 'Stack Version',
+       :default => ENV['VERSION']
+     )
+     attribute(
+       :ttl, String,
+       :description => 'Stack TTL',
+       :default => ENV['TTL']
      )
    end
    class ChangeSet
      attribute(
        :profile, String,
-       :description => 'Stack Profile'
+       :description => 'Stack Profile',
+       :default => ENV['PROFILE']
      )
      attribute(
        :environment, String,
-       :description => 'Profile Environment'
+       :description => 'Profile Environment',
+       :default => ENV['ENVIRONMENT']
      )
      attribute(
        :role, String,
-       :description => 'Profile Role'
-     )
-     attribute(
-       :ttl, String,
-       :description => 'Stack TTL'
+       :description => 'Profile Role',
+       :default => ENV['ROLE']
      )
      attribute(
        :version, String,
-       :description => 'Stack Version'
+       :description => 'Stack Version',
+       :default => ENV['VERSION']
+     )
+     attribute(
+       :ttl, String,
+       :description => 'Stack TTL',
+       :default => ENV['TTL']
      )
    end
  end
