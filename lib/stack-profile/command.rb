@@ -24,10 +24,6 @@ module Sfn
         :description => 'Stack Version',
         :default => ENV['VERSION']
       )
-      attribute(
-        :defaults, [TrueClass, FalseClass],
-        :default => ENV['DEFAULTS'] == 'true' ? true : false
-      )
    end
    class Create
      attribute(
@@ -54,10 +50,6 @@ module Sfn
        :ttl, String,
        :description => 'Stack TTL',
        :default => ENV['TTL']
-     )
-     attribute(
-       :defaults, [TrueClass, FalseClass],
-       :default => ENV['DEFAULTS'] == 'true' ? true : false
      )
    end
    class Update
@@ -86,10 +78,6 @@ module Sfn
        :description => 'Stack TTL',
        :default => ENV['TTL']
      )
-     attribute(
-       :defaults, [TrueClass, FalseClass],
-       :default => ENV['DEFAULTS'] == 'true' ? true : false
-     )
    end
    class ChangeSet
      attribute(
@@ -116,10 +104,6 @@ module Sfn
        :ttl, String,
        :description => 'Stack TTL',
        :default => ENV['TTL']
-     )
-     attribute(
-       :defaults, [TrueClass, FalseClass],
-       :default => ENV['DEFAULTS'] == 'true' ? true : false
      )
    end
  end
