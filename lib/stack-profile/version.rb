@@ -1,3 +1,3 @@
 module StackProfileCallback
-  VERSION = Gem::Version.new('0.1.8')
+  VERSION = Gem::Version.new('0.1.10')
 end
