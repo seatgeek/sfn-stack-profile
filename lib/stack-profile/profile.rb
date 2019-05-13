@@ -130,6 +130,10 @@ module Sfn
           config[:apply_stack] = config[:apply_stack].concat(data.delete(:apply_stacks)).uniq
         end
 
+        if data[:mappings]
+          config[:apply_mapping] = data.delete(:mappings).merge(config[:apply_mapping])
+        end
+
         ## Merge mapped parameters
         environment_compile_parameters.each do |param|
           config[:compile_parameters].merge!({ param => context[:environment] })
