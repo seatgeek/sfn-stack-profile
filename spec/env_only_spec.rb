@@ -64,8 +64,12 @@ RSpec.describe StackProfile::Builder do
       expect(data[:parameters]).to eq(env_1_only_output['parameters'])
     end
 
-    it "Applies a stack" do
+    it "Applies a Stack" do
       expect(data[:apply_stacks]).to eq(env_1_only_output['apply_stacks'])
+    end
+
+    it "Sets Stack Tags" do
+      expect(data[:options][:tags]).to eq(env_1_only_output[:options]['tags'])
     end
   end
 end

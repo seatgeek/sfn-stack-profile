@@ -65,5 +65,9 @@ RSpec.describe StackProfile::Builder do
     it "Applies a stack" do
       expect(data[:apply_stacks]).to eq(env_1_role_no_defaults['apply_stacks'])
     end
+
+    it "Sets Stack Tags" do
+      expect(data[:options][:tags]).to eq(env_1_role_no_defaults[:options]['tags'])
+    end
   end
 end

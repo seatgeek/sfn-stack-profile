@@ -43,6 +43,8 @@ RSpec.describe StackProfile::Builder do
         'rotate_wait_seconds' => 300,
         'ttl_days' => 7,
         'profile' => 'spec_profile',
+        'environment' => 'env_2',
+        'role' => 'role'
       }
     },
   }
@@ -76,6 +78,10 @@ RSpec.describe StackProfile::Builder do
 
     it "Applies a stack" do
       expect(data[:apply_stacks]).to eq(env2_output['apply_stacks'])
+    end
+
+    it "Sets Stack Tags" do
+      expect(data[:options][:tags]).to eq(env2_output[:options]['tags'])
     end
   end
 end

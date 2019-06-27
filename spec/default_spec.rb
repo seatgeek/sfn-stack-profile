@@ -64,7 +64,7 @@ RSpec.describe StackProfile::Builder do
       expect(data[:parameters]).to eq(default_output['parameters'])
     end
 
-    it "Has default tags" do
+    it "Has Default Stack Tags" do
       expect(data[:options][:tags]).to eq(default_output[:options]['tags'])
     end
 
