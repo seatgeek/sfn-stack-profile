@@ -44,82 +44,9 @@ RSpec.describe StackProfile::Builder do
         'rotate_wait_seconds' => 300,
         'ttl_days' => 7,
         'profile' => 'spec_profile',
-      }
-    },
-  }
-
-  env2_output = {
-    'apply_stack' => [
-      'env2_vpc'
-    ],
-    'compile_parameters' => {
-      'subnet_zone' => 'private',
-      'availability_zones' => 3
-    },
-    'parameters' => {
-      'instance_type' => 'm4.4xlarge',
-      'service' => 'default-service',
-      'min_instances' => 3,
-      'max_instances' => 5,
-      'tld' => 'env2',
-      'class' => 'role',
-      'service' => 'role'
-    },
-    'template' => 'default_template',
-    options: {
-      'tags' => {
-        'team' => 'testers',
-        'rotate_count' => 1,
-        'rotate_wait_seconds' => 300,
-        'ttl_days' => 7,
-        'profile' => 'spec_profile',
-      }
-    },
-  }
-
-  env_1_no_role_output = {
-    'apply_stack' => [
-      'env1_vpc'
-    ],
-    'compile_parameters' => {
-      'subnet_zone' => 'private',
-      'availability_zones' => 4
-    },
-    'parameters' => {
-      'instance_type' => 'm4.4xlarge',
-      'service' => 'default-service',
-      'min_instances' => 3,
-      'max_instances' => 100,
-      'tld' => 'env1'
-    },
-    'template' => 'default_template',
-    options: {
-      'tags' => {
-        'team' => 'testers',
-        'rotate_count' => 1,
-        'rotate_wait_seconds' => 300,
-        'ttl_days' => 7,
-        'profile' => 'spec_profile',
-      }
-    },
-  }
-
-  env_1_role_no_defaults = {
-    'apply_stack' => [
-      'env1_vpc'
-    ],
-    'compile_parameters' => {
-      'availability_zones' => 4
-    },
-    'parameters' => {
-      'tld' => 'env1'
-    },
-    options: {
-      'tags' => {
-        'rotate_count' => 1,
-        'rotate_wait_seconds' => 300,
-        'ttl_days' => 7,
-        'profile' => 'spec_profile',
+        'environment' => 'env_1',
+        'role' => 'role',
+        'version' => 'v0.0.0'
       }
     },
   }

@@ -9,13 +9,6 @@ RSpec.describe StackProfile::Builder do
     }
   }
 
-  context = {
-    environment: 'env1',
-    role: 'role',
-    version: 'v0.0.0'
-  }
-
-
   # Expected Outputs
   default_output = {
     'compile_parameters' => {
