@@ -1,0 +1,36 @@
+---
+profile: spec_profile
+
+environment_compile_parameters:
+  - environment
+
+environment_parameters:
+  - environment
+
+role_parameters:
+  - class
+  - service
+
+version_parameters:
+  - version
+
+# Environment Overrides
+env_1:
+  compile_parameters:
+    availability_zones: 4
+  parameters:
+    tld: env1
+  apply_stacks:
+    - env1_vpc
+
+role:
+  parameters:
+    max_instances: 5
+
+meta:
+  rotate_count: 1
+  rotate_wait_seconds: 300
+  updates_allowed: true
+  template_update_allowed: true
+  always_update_template: false
+  default_ttl: 7
