@@ -52,15 +52,15 @@ RSpec.describe StackProfile::Builder do
   context "With No Overrides" do
     data = profile.profile_config('spec_profile', {})
 
-    it "Has a default config" do
+    it "Has a Default Config" do
       expect(profile.load_profile('spec_profile')).to include('default')
     end
 
-    it "Has default compile time parameters" do
+    it "Has Default Compile Time Parameters" do
       expect(data[:compile_parameters]).to eq(default_output['compile_parameters'])
     end
 
-    it "Has default parameters" do
+    it "Has Default Parameters" do
       expect(data[:parameters]).to eq(default_output['parameters'])
     end
 
@@ -68,7 +68,7 @@ RSpec.describe StackProfile::Builder do
       expect(data[:options][:tags]).to eq(default_output[:options]['tags'])
     end
 
-    it "Doesn't apply stacks" do
+    it "Doesn't Apply Stacks" do
       expect(data[:apply_stack]).to be nil
     end
   end

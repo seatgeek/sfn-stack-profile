@@ -1,5 +1,4 @@
 require 'stack-profile'
-#require 'stack-profile/profile'
 require 'stack-profile/builder'
 
 RSpec.describe StackProfile::Builder do
