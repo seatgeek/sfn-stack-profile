@@ -84,7 +84,6 @@ module Sfn
         default_tags[:profile] = profile
         default_tags[:environment] = context[:environment] if context[:environment]
         default_tags[:role] = context[:role] if context[:role]
-        default_tags[:version] = context[:version] if context[:version]
         ## Meta tags always override
         meta_tags = {}
         meta_tags[:ttl_days] = config[:ttl] || profile_data[:meta][:default_ttl]
